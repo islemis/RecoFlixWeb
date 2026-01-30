@@ -25,10 +25,23 @@ def convert(obj):
     for i in ast.literal_eval(obj):
         L.append(i['name'])
     return L
+def get_director_producer_names(crew_str):
+    """Return a list containing director(s) and producer(s) names"""
+    names = []
+    try:
+        crew = ast.literal_eval(crew_str)
+        for member in crew:
+            job = member.get("job", "").lower()
+            if job == "director" or job == "producer":
+                names.append(member.get("name"))
+    except Exception:
+        pass
+    return names
 
     
 movies = movies[['movie_id','title','overview','genres','keywords','vote_average']]
 movies = movies.merge(credits, on='movie_id')
+movies['crew'] = movies['crew'].apply(get_director_producer_names)  # only directors and producers
 
 movies['genres'] = movies['genres'].apply(convert)
 movies['keywords'] = movies['keywords'].apply(convert)

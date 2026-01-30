@@ -1,0 +1,7 @@
+# Ignore data files
+*.pkl
+data/similarity.npy
+*.csv
+# Ignore all other .pkl or .npy in data if needed
+# data/*.pkl
+# data/*.npy
