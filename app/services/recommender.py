@@ -158,6 +158,7 @@ def get_movie_by_id(movie_id: int):
         "cast": movie.get("cast"),
         "crew": movie.get("crew"),
         "poster": poster,
-        "vote_average": movie.get("vote_average")
+        "vote_average": movie.get("vote_average"),
+        "release_date": movie.get("release_date"),
     }
 

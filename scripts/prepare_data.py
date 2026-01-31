@@ -39,7 +39,7 @@ def get_director_producer_names(crew_str):
     return names
 
     
-movies = movies[['movie_id','title','overview','genres','keywords','vote_average']]
+movies = movies[['movie_id','title','overview','genres','keywords','vote_average','release_date']]
 movies = movies.merge(credits, on='movie_id')
 movies['crew'] = movies['crew'].apply(get_director_producer_names)  # only directors and producers
 

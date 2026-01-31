@@ -1,4 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field 
+from typing import List
 
 class UserRegister(BaseModel):
     """Schema for user registration"""
@@ -45,6 +46,7 @@ class UserResponse(BaseModel):
     username: str
     full_name: str
     is_admin: bool = False
-    
+    favorites: List[int] = []  
+
     class Config:
         from_attributes = True
