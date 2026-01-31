@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean , JSON 
 from datetime import datetime
 from app.core.database import Base
+from sqlalchemy.ext.mutable import MutableList
 
 class User(Base):
     __tablename__ = "users"
@@ -13,3 +14,4 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    favorites = Column(MutableList.as_mutable(JSON), default=[])
