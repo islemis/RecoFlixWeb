@@ -3,11 +3,11 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.core.database import get_db
 from app.schemas.user import UserResponse
-from app.services.user import get_user_by_id, get_user_by_username, get_user_by_email, update_user, delete_user
+from app.services.user import get_user_by_id, get_user_by_username, get_user_by_email, update_user, delete_user, set_user_admin
 from app.models.user import User
 from app.core.deps import admin_required
 
-router = APIRouter(prefix="/admin", tags=["Admin"])
+router = APIRouter()
 
 @router.get("/users", response_model=List[UserResponse])
 def list_users(db: Session = Depends(get_db), _=Depends(admin_required)):
@@ -41,7 +41,13 @@ def remove_user(user_id: int, db: Session = Depends(get_db), _=Depends(admin_req
 
 @router.post("/users/{user_id}/promote", response_model=UserResponse)
 def promote_user(user_id: int, db: Session = Depends(get_db), _=Depends(admin_required)):
-    raise HTTPException(status_code=status.HTTP_410_GONE, detail="This endpoint has been removed")
-
+    user = set_user_admin(db, user_id, True)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    return user
 @router.post("/users/{user_id}/demote", response_model=UserResponse)
-def demote_user(user_id: int, db: Session = Depends(get_db), _=Depends(admin_required)):    raise HTTPException(status_code=status.HTTP_410_GONE, detail="This endpoint has been removed")
+def demote_user(user_id: int, db: Session = Depends(get_db), _=Depends(admin_required)):  
+    user = set_user_admin(db, user_id, False)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    return user
