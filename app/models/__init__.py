@@ -1,1 +1,3 @@
-# This file intentionally left blank to make models a package
+from .user import *
+from .rating import *
+from .movie import *

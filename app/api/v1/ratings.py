@@ -23,8 +23,8 @@ async def create_rating(request: Request,
     # validation simple
     if movie_id is None or rating is None:
         raise HTTPException(status_code=400, detail="movie_id and rating are required")
-    if rating < 0 or rating > 5:
-        raise HTTPException(status_code=400, detail="Rating must be between 0 and 5")
+    if rating < 0 or rating > 10:
+        raise HTTPException(status_code=400, detail="Rating must be between 0 and 10")
 
     # Vérifier si l'utilisateur a déjà noté ce film
     existing = db.query(Rating).filter(
@@ -39,16 +39,8 @@ async def create_rating(request: Request,
             detail="Vous avez déjà noté ce film. Vous ne pouvez pas ajouter un autre commentaire."
         )
 
-    # Ajouter la note
-    new_rating = Rating(
-        user_id=current_user.id,
-        movie_id=movie_id,
-        rating=rating,
-        comment=comment
-    )
-    db.add(new_rating)
-    db.commit()
-    db.refresh(new_rating)
+    # Utiliser add_rating pour gérer la logique de mise à jour
+    new_rating = add_rating(db, current_user.id, movie_id, rating, comment)
 
     return {
         "id": new_rating.id,
