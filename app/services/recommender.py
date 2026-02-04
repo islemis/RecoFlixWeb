@@ -49,7 +49,7 @@ def recommend_by_movie(title, top_n=5):
     except:
         return pd.DataFrame(columns=['title', 'vote_average', 'movie_id'])
 
-def search_and_recommend(query, search_limit=10, reco_limit=5):
+def search_and_recommend(query, search_limit=10, reco_limit=10):
     query = query.lower()
     search_results = movies_df[
         movies_df['title'].str.lower().str.contains(query)
@@ -79,7 +79,7 @@ def search_and_recommend(query, search_limit=10, reco_limit=5):
         "recommendations": recommendations.reset_index(drop=True)
     }
 
-def recommend_by_movie_id(movie_id, top_n=5):
+def recommend_by_movie_id(movie_id, top_n=10):
     if movies_df.empty or similarity is None:
         return pd.DataFrame(columns=['movie_id', 'title', 'vote_average'])
     try:

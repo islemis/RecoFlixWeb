@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field 
-from typing import List
+from typing import List, Optional
 
 class UserRegister(BaseModel):
     """Schema for user registration"""
@@ -38,6 +38,21 @@ class Token(BaseModel):
     user_id: int
     username: str
     email: str
+
+class UserUpdate(BaseModel):
+    """Schema for user update"""
+    email: Optional[EmailStr] = None
+    username: Optional[str] = Field(None, min_length=3, max_length=50)
+    full_name: Optional[str] = Field(None, min_length=1, max_length=255)
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "newemail@example.com",
+                "username": "newusername",
+                "full_name": "New Name"
+            }
+        }
 
 class UserResponse(BaseModel):
     """Schema for user response"""
